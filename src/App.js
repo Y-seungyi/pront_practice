@@ -4,29 +4,36 @@ import styles from "./App.module.css";
 import { useState, useEffect } from "react";
 
 function App() {
-  const [counter, setValue] = useState(0);
-  const [keyword, setKey] = useState("");
-  const onClick = () => setValue((prev) => prev +1);
-  const onChange = (event) => setKey(event.target.value);
-  console.log("i run all time");
-  useEffect(() => {
-    console.log("asd");
-  },[])
-  useEffect(() =>{
-  if(keyword !== "" && keyword.length>=5)
-  console.log("searchfor",keyword)
-  },[keyword]);
-  return (
-    <div >
+  const [toDo, setTodo] = useState("");
+  const [toDos,setTodos] = useState([]);
+  const onChange = (event) => setTodo(event.target.value);
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if(toDo === ''){
+      return;
+    }
+    setTodos((currentArray) => [toDo, ...currentArray]);
+    setTodo("");
+  }
+  console.log(toDos);
+  return(
+    <div>
+      <h1>My to Dos({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
       <input 
-        value={keyword}
         onChange={onChange}
         type="text" 
-        placeholder="search here"></input>
-      <h1>{counter}</h1>
-      <button onClick={onClick} >click me</button>
+        placeholder="Write your to do"
+        value={toDo}></input>
+        <button>Add To Do</button>
+      </form>
+      <hr/>
+      <ul>
+      {toDos.map((item, index)=> <li key={index}>{item}</li>)}
+      </ul>
     </div>
-  );
+      
+  )
 }
 
 export default App;
